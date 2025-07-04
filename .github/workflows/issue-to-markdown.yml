@@ -1,4 +1,4 @@
-name: Convert GitHub Issue to Markdown File
+name: Convert GitHub Issue to Markdown
 
 on:
   issues:
@@ -8,21 +8,23 @@ permissions:
   contents: write
 
 jobs:
-  generate-content:
+  generate-markdown:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout the repository
         uses: actions/checkout@v3
 
       - name: Generate markdown from issue
-        shell: bash
         run: |
-          echo "🧩 Parsing issue content..."
+          echo "🧩 Starting conversion..."
 
           TITLE="${{ github.event.issue.title }}"
           BODY="${{ github.event.issue.body }}"
           LABELS=$(echo "${{ toJson(github.event.issue.labels) }}" | tr '[:upper:]' '[:lower:]')
+
+          echo "🔍 Issue title: $TITLE"
+          echo "🏷️ Labels: $LABELS"
 
           if echo "$LABELS" | grep -q "testimonial"; then
             FOLDER="tests"
@@ -30,29 +32,27 @@ jobs:
             FOLDER="posts"
           fi
 
+          mkdir -p "$FOLDER"
+
           SLUG=$(echo "$TITLE" | iconv -c -t ascii | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
           DATE=$(date +%Y-%m-%d)
-          FILENAME="${FOLDER}/${DATE}-${SLUG}.md"
-          echo "FILENAME=$FILENAME" >> $GITHUB_ENV
+          FILENAME="$FOLDER/${DATE}-${SLUG}.md"
 
-          mkdir -p "$FOLDER"
-          echo "Generating file at: $FILENAME"
+          echo "📄 Will create file: $FILENAME"
 
-          cat <<EOF > "$FILENAME"
----
-title: "$TITLE"
-author: "Admin"
-tags: ""
-date: "$DATE"
-image: ""
----
+          echo "---" > "$FILENAME"
+          echo "title: \"$TITLE\"" >> "$FILENAME"
+          echo "author: \"Admin\"" >> "$FILENAME"
+          echo "tags: \"\"" >> "$FILENAME"
+          echo "date: \"$DATE\"" >> "$FILENAME"
+          echo "image: \"\"" >> "$FILENAME"
+          echo "---" >> "$FILENAME"
+          echo "" >> "$FILENAME"
+          echo "$BODY" >> "$FILENAME"
 
-$BODY
-EOF
-
-      - name: Commit and push new markdown
+      - name: Commit and push markdown
         uses: EndBug/add-and-commit@v9
         with:
-          add: ${{ env.FILENAME }}
-          message: "📄 Added: ${{ github.event.issue.title }}"
+          add: 'posts/ tests/'
+          message: "📄 Auto-created post: ${{ github.event.issue.title }}"
           default_author: github_actions
