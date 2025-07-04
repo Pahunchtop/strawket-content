@@ -1,0 +1,58 @@
+name: Convert GitHub Issue to Markdown File
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Generate markdown from issue
+        shell: bash
+        run: |
+          echo "🧩 Parsing issue content..."
+
+          TITLE="${{ github.event.issue.title }}"
+          BODY="${{ github.event.issue.body }}"
+          LABELS=$(echo "${{ toJson(github.event.issue.labels) }}" | tr '[:upper:]' '[:lower:]')
+
+          if echo "$LABELS" | grep -q "testimonial"; then
+            FOLDER="tests"
+          else
+            FOLDER="posts"
+          fi
+
+          SLUG=$(echo "$TITLE" | iconv -c -t ascii | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
+          DATE=$(date +%Y-%m-%d)
+          FILENAME="${FOLDER}/${DATE}-${SLUG}.md"
+
+          echo "Generating file at: $FILENAME"
+
+          mkdir -p "$FOLDER"
+
+          cat <<EOF > "$FILENAME"
+---
+title: "$TITLE"
+author: "Admin"
+tags: ""
+date: "$DATE"
+image: ""
+---
+
+$BODY
+EOF
+
+      - name: Commit and push new markdown
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'posts/ tests/'
+          message: "📄 Added: ${{ github.event.issue.title }}"
+          default_author: github_actions
