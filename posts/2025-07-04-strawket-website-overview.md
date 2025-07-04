@@ -3,7 +3,7 @@ title: "Strawket Website Overview"
 author: "Admin"
 tags: ""
 date: "2025-07-04"
-image: "logo.png"
+image: "search.png"
 ---
 
 
