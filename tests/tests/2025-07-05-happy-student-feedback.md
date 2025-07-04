@@ -1,7 +1,7 @@
 ---
 title: "Fantastic Support by Strawket"
 name: "Priya Mehta"
-designation: "Student"
+designation: "home"
 role: "learner"
 profile: ""
 date: "2025-07-05"
