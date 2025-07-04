@@ -40,19 +40,15 @@ jobs:
 
           echo "📄 Will create file: $FILENAME"
 
-          {
-            echo "---"
-            echo "title: \"$TITLE\""
-            echo "author: \"Admin\""
-            echo "tags: \"\""
-            echo "date: \"$DATE\""
-            echo "image: \"\""
-            echo "---"
-            echo ""
-            cat <<EOF
-$BODY
-EOF
-          } > "$FILENAME"
+          echo "---" > "$FILENAME"
+          echo "title: \"$TITLE\"" >> "$FILENAME"
+          echo "author: \"Admin\"" >> "$FILENAME"
+          echo "tags: \"\"" >> "$FILENAME"
+          echo "date: \"$DATE\"" >> "$FILENAME"
+          echo "image: \"\"" >> "$FILENAME"
+          echo "---" >> "$FILENAME"
+          echo "" >> "$FILENAME"
+          echo "$BODY" >> "$FILENAME"
 
       - name: Commit and push markdown
         uses: EndBug/add-and-commit@v9
