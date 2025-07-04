@@ -3,7 +3,7 @@ title: "Spiritual Tranquility at Khatu Shyam Ji Temple"
 author: "Admin"
 tags: ""
 date: "2025-07-04"
-image: ""
+image: "temple.jpg"
 ---
 
 ![Khatu Shyam Ji Temple](https://raw.githubusercontent.com/Pahunchtop/strawket-content/main/images/temple.jpg)
