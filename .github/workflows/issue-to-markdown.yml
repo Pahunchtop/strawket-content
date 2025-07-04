@@ -33,10 +33,10 @@ jobs:
           SLUG=$(echo "$TITLE" | iconv -c -t ascii | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
           DATE=$(date +%Y-%m-%d)
           FILENAME="${FOLDER}/${DATE}-${SLUG}.md"
-
-          echo "Generating file at: $FILENAME"
+          echo "FILENAME=$FILENAME" >> $GITHUB_ENV
 
           mkdir -p "$FOLDER"
+          echo "Generating file at: $FILENAME"
 
           cat <<EOF > "$FILENAME"
 ---
@@ -53,6 +53,6 @@ EOF
       - name: Commit and push new markdown
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'posts/ tests/'
+          add: ${{ env.FILENAME }}
           message: "📄 Added: ${{ github.event.issue.title }}"
           default_author: github_actions
