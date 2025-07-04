@@ -6,7 +6,6 @@ date: "2025-07-04"
 image: "temple.jpg"
 ---
 
-![Khatu Shyam Ji Temple](https://raw.githubusercontent.com/Pahunchtop/strawket-content/main/images/temple.jpg)
 
 The Khatu Shyam Ji Temple in Rajasthan is a beacon of spiritual devotion and serenity. Devotees from across the country gather here to seek blessings and experience peace.
 
