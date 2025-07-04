@@ -1,5 +1,4 @@
 ---
-title: "Anjali Verma"
 name: "Anjali Verma"
 designation: "Learning Enthusiast"
 role: "academy"
