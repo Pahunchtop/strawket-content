@@ -3,7 +3,7 @@ title: "Strawket test blog"
 author: "Admin"
 tags: ""
 date: "2025-07-04"
-image: "js.png"
+image: "logo.png"
 ---
 
 
